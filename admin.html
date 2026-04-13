@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Admin Panel - Student Fund Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .admin-tabs button {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .admin-tabs button.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .admin-tabs button:hover {
+            color: var(--primary);
+        }
+
+        .admin-content {
+            display: none;
+        }
+
+        .admin-content.active {
+            display: block;
+        }
+
+        .user-card,
+        .project-card-admin {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-info,
+        .project-info {
+            flex: 1;
+        }
+
+        .user-info h4,
+        .project-info h4 {
+            margin: 0 0 8px 0;
+            color: var(--text);
+        }
+
+        .user-info p,
+        .project-info p {
+            margin: 4px 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: var(--primary);
+            color: white;
+        }
+
+        .role-badge.student {
+            background: #3b82f6;
+        }
+
+        .role-badge.donor {
+            background: #8b5cf6;
+        }
+
+        .role-badge.admin {
+            background: #ef4444;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .action-buttons button {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-delete {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #dc2626;
+        }
+
+        .btn-promote {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-promote:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-hover);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .stat-card p {
+            color: var(--text-muted);
+            margin: 8px 0 0 0;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .filter-select {
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-left: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state h3 {
+            margin: 0;
+        }
+
+        .progress-bar-admin {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill-admin {
+            height: 100%;
+            background: var(--primary);
+        }
+    </style>
+</head>
+
+<body onload="loadAdminDash()">
+    <nav>
+        <h2>Admin Panel<span style="font-weight:300; font-size:1rem; color:var(--text-muted);">| Management</span>
+        </h2>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <button id="eval-button" class="btn btn-sm btn-outline" type="button" onclick="openEvaluator()"
+                aria-label="Open AI Evaluator">
+                Evaluator
+            </button>
+            <span style="margin-right:15px; font-weight:600;" id="admin-name">Admin</span>
+            <button onclick="logout()" class="btn btn-sm btn-outline">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container" style="max-width: 1200px;">
+        <div class="admin-tabs">
+            <button class="tab-btn active" onclick="switchAdminTab('stats')">📊 Dashboard</button>
+            <button class="tab-btn" onclick="switchAdminTab('users')">👥 Users</button>
+            <button class="tab-btn" onclick="switchAdminTab('projects')">📁 Projects</button>
+            <button class="tab-btn" onclick="switchAdminTab('activity')">📜 Activity</button>
+        </div>
+
+        <!-- Dashboard Stats -->
+        <div id="stats" class="admin-content active">
+            <h3>Dashboard Overview</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 id="stat-users">0</h3>
+                    <p>Total Users</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="stat-projects">0</h3>
+                    <p>Total Projects</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="stat-funding">₹0</h3>
+                    <p>Total Funded</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="stat-admins">0</h3>
+                    <p>Admin Users</p>
+                </div>
+            </div>
+            <div
+                style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px;">
+                <h4>Role Distribution</h4>
+                <p id="role-dist"></p>
+            </div>
+        </div>
+
+        <!-- Users Management -->
+        <div id="users" class="admin-content">
+            <h3>Users Management</h3>
+            <div class="search-box">
+                <input type="text" id="user-search" placeholder="Search by name or email..."
+                    oninput="filterUsers(this.value)">
+            </div>
+            <div id="users-list" class="users-list">
+                <div class="empty-state">
+                    <h3>No users found</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Management -->
+        <div id="projects" class="admin-content">
+            <h3>Projects Management</h3>
+            <div class="search-box">
+                <input type="text" id="project-search" placeholder="Search by title..."
+                    oninput="filterProjects(this.value)">
+                <select class="filter-select" id="sector-filter" onchange="filterProjects()">
+                    <option value="">All Sectors</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Medical">Medical</option>
+                    <option value="Agriculture">Agriculture</option>
+                </select>
+            </div>
+            <div id="projects-list" class="projects-list">
+                <div class="empty-state">
+                    <h3>No projects found</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Log -->
+        <div id="activity" class="admin-content">
+            <h3>Activity Log</h3>
+            <div id="activity-log" class="activity-log">
+                <div class="empty-state">
+                    <h3>No activity yet</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EVALUATOR POPUP MODAL -->
+    <div id="evaluator-modal" class="modal-overlay" style="display:none;">
+        <div class="chat-box" style="flex-direction: column; width: 600px; max-height: 90vh; overflow-y: auto;">
+            <div class="chat-header">
+                <div>
+                    <h4>AI Project Evaluator</h4>
+                    <small>Get a smart estimate for project budget, risk rating, and funding readiness.</small>
+                </div>
+                <button class="close-chat" onclick="closeEvaluator()" aria-label="Close evaluator">✕</button>
+            </div>
+            <div class="chat-main" style="padding: 20px; flex: 1;">
+                <form id="evaluator-form" class="evaluator-form">
+                    <label>Project Title</label>
+                    <input type="text" id="eval-title" placeholder="e.g., Campus Tutor AI" required style="width: 100%; margin-bottom: 15px; padding: 10px; border-radius: 8px; border: 1px solid rgba(148, 163, 184, 0.18); background: rgba(15, 23, 42, 0.85); color: white;">
+
+                    <label>Description</label>
+                    <textarea id="eval-desc" rows="4" placeholder="Describe the project idea..." required style="width: 100%; margin-bottom: 15px; padding: 10px; border-radius: 8px; border: 1px solid rgba(148, 163, 184, 0.18); background: rgba(15, 23, 42, 0.85); color: white;"></textarea>
+
+                    <label>Sector</label>
+                    <select id="eval-sector" style="width: 100%; margin-bottom: 15px; padding: 10px; border-radius: 8px; border: 1px solid rgba(148, 163, 184, 0.18); background: rgba(15, 23, 42, 0.85); color: white;">
+                        <option>Technology</option>
+                        <option>Medical</option>
+                        <option>Agriculture</option>
+                    </select>
+
+                    <label>Planned Budget (₹)</label>
+                    <input type="number" id="eval-budget" placeholder="e.g., 12000" required style="width: 100%; margin-bottom: 15px; padding: 10px; border-radius: 8px; border: 1px solid rgba(148, 163, 184, 0.18); background: rgba(15, 23, 42, 0.85); color: white;">
+
+                    <button type="submit" class="btn" style="width: 100%;">Evaluate Project</button>
+                </form>
+                <div id="evaluator-results" class="evaluator-results" style="display:none; margin-top:20px;">
+                    <h3>Evaluation Summary</h3>
+                    <div id="eval-summary"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

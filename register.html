@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Register - Student Fund Hub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav>
+        <h2>Student Fund Hub</h2>
+        <a href="index.html">Home</a>
+    </nav>
+
+    <div class="auth-wrapper">
+        <div class="card" style="max-width: 400px; width: 100%;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h1>Create Account</h1>
+                <p>Join the innovation community</p>
+            </div>
+
+            <form onsubmit="registerUser(event)">
+                <label>Full Name</label>
+                <input type="text" id="reg-name" placeholder="Dharunraja" required>
+
+                <label>Email Address</label>
+                <input type="email" id="reg-email" placeholder="dharunr@gmail.com" required>
+
+                <label>Password</label>
+                <input type="password" id="reg-pass" placeholder="••••••••" required>
+
+                <label>I am a:</label>
+                <select id="reg-role">
+                    <option value="student">Student</option>
+                    <option value="donor">Donor / Funder</option>
+                </select>
+
+                <button type="submit" class="btn">Sign Up</button>
+            </form>
+
+            <div style="text-align: center; margin-top: 20px; font-size: 0.9rem;">
+                Already have an account? <a href="login.html" style="color: var(--primary); margin:0;">Log In</a>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

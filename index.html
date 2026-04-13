@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Student Fund Hub - Future of Funding</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav>
+        <h2>Student Fund Hub</h2>
+        <div>
+            <!-- ❌ Chat button removed -->
+            <a href="#projects">Projects</a>
+            <a href="login.html">Login</a>
+            <a href="register.html" class="btn-nav">Sign Up</a>
+        </div>
+    </nav>
+
+    <main class="page-shell">
+        <section class="hero">
+            <div class="container hero-grid">
+                <div class="hero-copy">
+                    <span class="featured-pill">Student funding made possible</span>
+                    <h1>Empowering student innovators, one funded idea at a time.</h1>
+                    <p>Connect emerging talent with mission-driven donors through a modern platform for project
+                        discovery, progress tracking, and transparent support.</p>
+                    <div class="hero-actions">
+                        <a href="register.html" class="btn">Start Funding</a>
+                        <a href="#projects" class="btn btn-outline">View Projects</a>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-box">
+                            <strong>150+</strong>
+                            <span>Active proposals</span>
+                        </div>
+                        <div class="info-box">
+                            <strong>₹1.2M</strong>
+                            <span>Funding requested</span>
+                        </div>
+                        <div class="info-box">
+                            <strong>98%</strong>
+                            <span>Supporter satisfaction</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-panel card">
+                    <h3>Featured campaign</h3>
+                    <p>Campus CropSense is building an AI-powered sensor network to reduce waste, improve yields, and
+                        support smart farming on campus.</p>
+                    <div class="project-preview">
+                        <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80"
+                            alt="Smart farm sensors">
+                        <div class="project-preview-content">
+                            <span class="project-tag">Smart Farming</span>
+                            <h4>Campus CropSense</h4>
+                            <small>Raised ₹8,400 of ₹12,000</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="section-heading">
+                <h3>Trending Sectors</h3>
+                <p>Explore the categories where student teams are driving the most innovation today.</p>
+            </div>
+            <div class="badges-row">
+                <span class="badge badge-tech">🚀 Artificial Intelligence</span>
+                <span class="badge badge-med">🏥 Bio-Tech</span>
+                <span class="badge badge-agri">🌱 Smart Farming</span>
+                <span class="badge badge-secondary">📚 EdTech</span>
+            </div>
+        </section>
+
+        <section id="projects" class="container projects-section">
+            <div class="section-heading">
+                <h2>Featured Student Projects</h2>
+                <p>From health-tech to sustainability, these student-led ideas are building measurable impact with donor
+                    support.</p>
+            </div>
+
+            <div class="projects-grid">
+                <article class="project-card card">
+                    <div class="project-image"
+                        style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80');">
+                    </div>
+                    <div class="project-content">
+                        <span class="project-tag">AI</span>
+                        <h3>Campus Tutor AI</h3>
+                        <p>An adaptive learning assistant that helps students master coursework with personalized study
+                            pathways.</p>
+                        <div class="project-meta">
+                            <span>Raised <strong>₹9,100</strong></span>
+                            <span>68 backers</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-fill" style="width: 76%;"></div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- (Other project cards remain same) -->
+
+            </div>
+        </section>
+
+        <section class="container evaluator-section">
+            <div class="evaluator-card card">
+                <div class="section-heading">
+                    <h2>AI Project Evaluator</h2>
+                    <p>Get a smart estimate for project budget, risk rating, and funding readiness.</p>
+                </div>
+                <form id="evaluator-form" class="evaluator-form">
+                    <label>Project Title</label>
+                    <input type="text" id="eval-title" placeholder="e.g., Campus Tutor AI" required>
+
+                    <label>Description</label>
+                    <textarea id="eval-desc" rows="4" placeholder="Describe the project idea..." required></textarea>
+
+                    <label>Sector</label>
+                    <select id="eval-sector">
+                        <option>Technology</option>
+                        <option>Medical</option>
+                        <option>Agriculture</option>
+                    </select>
+
+                    <label>Planned Budget (₹)</label>
+                    <input type="number" id="eval-budget" placeholder="e.g., 12000" required>
+
+                    <button type="submit" class="btn">Evaluate Project</button>
+                </form>
+                <div id="evaluator-results" class="evaluator-results" style="display:none; margin-top:20px;">
+                    <h3>Evaluation Summary</h3>
+                    <div id="eval-summary"></div>
+                </div>
+                <p style="margin-top:15px; font-size:0.9rem; color:var(--text-muted);">This demo uses your provided
+                    Google API key for optional description sentiment analysis and project scoring.</p>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>For Students</h3>
+                    <p>Showcase your projects, gain visibility, and secure funding.</p>
+                    <a href="register.html" class="link-button">Create Profile →</a>
+                </div>
+                <div class="card">
+                    <h3>For Donors</h3>
+                    <p>Discover projects and make impact.</p>
+                    <a href="register.html" class="link-button">Start Browsing →</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ❌ Entire chat modal removed -->
+
+    <script src="script.js"></script>
+</body>
+
+</html>
