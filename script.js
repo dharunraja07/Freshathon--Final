@@ -7,12 +7,20 @@ let GOOGLE_IMAGE_SEARCH_CX = '';
 async function loadConfig() {
     try {
         const response = await fetch(`${API_BASE_URL}/config/`);
+
+        if (!response.ok) {
+            const text = await response.text();
+            console.error("Config API Error:", text);
+            return;
+        }
+
         const config = await response.json();
+
         GOOGLE_API_KEY = config.google_api_key || '';
         GOOGLE_IMAGE_SEARCH_CX = config.google_image_search_cx || '';
+
     } catch (error) {
         console.warn('Failed to load config from backend:', error);
-        // Fallback to empty values (API will be disabled)
     }
 }
 
@@ -32,11 +40,27 @@ async function apiCall(endpoint, method = 'GET', data = null) {
 
     try {
         const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error || `HTTP Error: ${response.status}`);
+
+        const text = await response.text();
+
+        let result;
+
+        try {
+            result = JSON.parse(text);
+        } catch {
+            throw new Error(`Server returned non-JSON response: ${text}`);
         }
-        return await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                result.error ||
+                result.message ||
+                `HTTP Error ${response.status}`
+            );
+        }
+
+        return result;
+
     } catch (error) {
         console.error(`API Error [${method} ${endpoint}]:`, error);
         throw error;
